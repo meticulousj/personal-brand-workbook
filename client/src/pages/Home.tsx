@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, BookOpen, Lightbulb, Target, Users, Zap } from "lucide-react";
 import { useLocation } from "wouter";
+import DownloadPDFButton from "@/components/DownloadPDFButton";
 
 const pillars = [
   {
@@ -128,12 +129,7 @@ export default function Home() {
               >
                 Start Your Journey <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-              >
-                Learn More
-              </Button>
+              <DownloadPDFButton />
             </div>
           </div>
         </div>
@@ -235,15 +231,18 @@ export default function Home() {
             Ready to Build Your Personal Brand?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Start with the first pillar and work through each section at your own pace. Each pillar includes exercises, self-assessments, and actionable insights to guide your journey.
+            Start with the first pillar and work through each section at your own pace. Each pillar includes exercises, self-assessments, and actionable insights to guide your journey. You can also download the entire workbook as a PDF to complete offline.
           </p>
-          <Button
-            size="lg"
-            onClick={() => navigate("/pillar/1")}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
-            Begin with Pillar 1 <ArrowRight className="ml-2 w-4 h-4" />
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              onClick={() => navigate("/pillar/1")}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              Begin with Pillar 1 <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+            <DownloadPDFButton />
+          </div>
         </div>
       </section>
 
@@ -280,9 +279,9 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
+          <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground gap-4">
             <p>&copy; 2026 Personal Brand Workbook. All rights reserved.</p>
-            <div className="flex gap-6 mt-4 md:mt-0">
+            <div className="flex gap-6">
               <a href="#" className="hover:text-foreground transition">Privacy</a>
               <a href="#" className="hover:text-foreground transition">Terms</a>
             </div>

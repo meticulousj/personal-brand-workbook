@@ -284,6 +284,36 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Substack CTA Section */}
+      <section className="py-16 md:py-20 bg-gradient-to-r from-amber-50 to-orange-50 border-y border-border">
+        <div className="container max-w-4xl mx-auto px-4">
+          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-border">
+            <div className="text-center">
+              <div className="inline-block px-4 py-2 bg-amber-100 rounded-full border border-amber-200 mb-6">
+                <span className="text-sm font-semibold text-amber-900">Newsletter</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
+                Deep Dives & Enlightened Insights
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Subscribe to the Substack newsletter for exclusive essays, personal branding strategies, and enlightened perspectives delivered directly to your inbox.
+              </p>
+              <a
+                href="https://freethinkinggenius.substack.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M22.539 8.242H1.46V4.556h21.079v3.686zM1.46 10.886v10.236h21.079V10.886H1.46zm2.204 2.884h4.155v4.936H3.664v-4.936zm5.313 0h4.154v4.936H8.977v-4.936zm5.314 0h4.155v4.936h-4.155v-4.936z"/>
+                </svg>
+                Subscribe on Substack
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-foreground/5 border-t border-border py-12">
         <div className="container max-w-7xl mx-auto px-4">
@@ -318,7 +348,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground gap-4">
-            <p>&copy; 2026 Personal Brand Workbook. All rights reserved.</p>
+            <p>&copy; Level Up: The Enlightened Edge. All rights reserved.</p>
             <div className="flex gap-6">
               <a href="#" className="hover:text-foreground transition">Privacy</a>
               <a href="#" className="hover:text-foreground transition">Terms</a>

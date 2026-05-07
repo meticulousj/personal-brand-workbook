@@ -246,6 +246,44 @@ export default function Home() {
         </div>
       </section>
 
+      {/* LinkedIn CTA Section */}
+      <section className="py-16 md:py-20 bg-gradient-to-br from-indigo-50 via-background to-rose-50 border-y border-border">
+        <div className="container max-w-4xl mx-auto px-4">
+          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-border">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">
+                Level Up: The Enlightened Edge
+              </h2>
+              <p className="text-lg text-primary font-semibold mb-4">@freethinkinggenius</p>
+              <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
+                Ready to take your personal brand to the next level? Connect with Jessica on LinkedIn to explore advanced strategies, share your journey, and join a community of enlightened thinkers building authentic personal brands.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="https://www.linkedin.com/in/jessicageniusbutler/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.722-2.004 1.418-.103.249-.129.597-.129.946v5.441h-3.554s.05-8.736 0-9.604h3.554v1.328c.43-.645 1.189-1.543 2.898-1.543 2.117 0 3.704 1.385 3.704 4.362v5.457zM5.337 9.433c-1.144 0-1.915-.758-1.915-1.707 0-.951.77-1.708 1.915-1.708 1.144 0 1.915.757 1.915 1.708 0 .949-.771 1.707-1.915 1.707zm1.575 10.019H3.762V9.829h3.15v9.623zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
+                </svg>
+                Connect on LinkedIn
+              </a>
+              <a
+                href="https://www.linkedin.com/in/jessicageniusbutler/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-8 py-3 bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 font-semibold rounded-lg transition-all duration-300"
+              >
+                View Profile
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-foreground/5 border-t border-border py-12">
         <div className="container max-w-7xl mx-auto px-4">
@@ -273,8 +311,8 @@ export default function Home() {
             <div>
               <h5 className="font-semibold text-foreground mb-4">Connect</h5>
               <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="https://www.linkedin.com/in/jessicageniusbutler/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition">LinkedIn</a></li>
                 <li><a href="#" className="hover:text-foreground transition">Twitter</a></li>
-                <li><a href="#" className="hover:text-foreground transition">LinkedIn</a></li>
                 <li><a href="#" className="hover:text-foreground transition">Contact</a></li>
               </ul>
             </div>

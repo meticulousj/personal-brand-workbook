@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Save } from "lucide-react";
 import { useLocation, useParams } from "wouter";
 import { Streamdown } from 'streamdown';
+import { useEffect, useState } from "react";
+import { useWorkbookProgressContext } from "@/contexts/WorkbookProgressContext";
+import { toast } from "sonner";
 
 const pillarContent: Record<number, { title: string; subtitle: string; content: string; exercises: string[] }> = {
   1: {
@@ -160,6 +163,40 @@ export default function PillarPage() {
   const [, navigate] = useLocation();
   const pillarId = parseInt(params.id || "1");
   const pillar = pillarContent[pillarId];
+  const { saveResponse, getResponses, setCurrentPillar, isPillarCompleted } = useWorkbookProgressContext();
+  const [responses, setResponses] = useState<Record<string, string>>({});
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Load saved responses on mount or when pillar changes
+  useEffect(() => {
+    const savedResponses = getResponses(pillarId);
+    setResponses(savedResponses);
+    setCurrentPillar(pillarId);
+    setIsSaved(true);
+  }, [pillarId, getResponses, setCurrentPillar]);
+
+  // Auto-save responses with debouncing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (Object.keys(responses).length > 0) {
+        saveResponse(pillarId, responses);
+        setIsSaved(true);
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [responses, pillarId, saveResponse]);
+
+  const handleResponseChange = (key: string, value: string) => {
+    setResponses((prev) => ({ ...prev, [key]: value }));
+    setIsSaved(false);
+  };
+
+  const handleManualSave = () => {
+    saveResponse(pillarId, responses);
+    setIsSaved(true);
+    toast.success('Progress saved successfully!');
+  };
 
   if (!pillar) {
     return <div>Pillar not found</div>;
@@ -167,12 +204,14 @@ export default function PillarPage() {
 
   const handleNext = () => {
     if (pillarId < 9) {
+      handleManualSave();
       navigate(`/pillar/${pillarId + 1}`);
     }
   };
 
   const handlePrev = () => {
     if (pillarId > 1) {
+      handleManualSave();
       navigate(`/pillar/${pillarId - 1}`);
     }
   };
@@ -217,9 +256,7 @@ export default function PillarPage() {
           <h1 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-4">
             {pillar.title}
           </h1>
-          <p className="text-xl text-muted-foreground">
-            {pillar.subtitle}
-          </p>
+          <p className="text-xl text-muted-foreground">{pillar.subtitle}</p>
         </div>
 
         {/* Content */}
@@ -233,15 +270,24 @@ export default function PillarPage() {
           <div className="space-y-4">
             {pillar.exercises.map((exercise, index) => (
               <Card key={index} className="p-6 border border-border hover:border-primary/30 transition">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-8 w-8 rounded-full bg-primary/10">
-                      <CheckCircle2 className="h-5 w-5 text-primary" />
+                <div className="flex gap-4 flex-col">
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="flex items-center justify-center h-8 w-8 rounded-full bg-primary/10">
+                        <CheckCircle2 className="h-5 w-5 text-primary" />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium text-foreground">{exercise}</p>
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-foreground">{exercise}</p>
-                  </div>
+                  <textarea
+                    value={responses[`exercise_${index}`] || ''}
+                    onChange={(e) => handleResponseChange(`exercise_${index}`, e.target.value)}
+                    placeholder="Write your response here..."
+                    className="w-full p-3 border border-border rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                    rows={3}
+                  />
                 </div>
               </Card>
             ))}
@@ -249,7 +295,7 @@ export default function PillarPage() {
         </div>
 
         {/* Navigation */}
-        <div className="flex gap-4 justify-between">
+        <div className="flex gap-4 justify-between items-center">
           <Button
             variant="outline"
             onClick={handlePrev}
@@ -259,6 +305,19 @@ export default function PillarPage() {
             <ArrowLeft className="w-4 h-4" />
             Previous Pillar
           </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={handleManualSave}
+              className="flex items-center gap-2"
+            >
+              <Save className="w-4 h-4" />
+              Save Progress
+            </Button>
+            {isSaved && (
+              <span className="text-sm text-green-600 font-medium">✓ Saved</span>
+            )}
+          </div>
           <Button
             onClick={handleNext}
             disabled={pillarId === 9}
@@ -279,8 +338,9 @@ export default function PillarPage() {
           <Button
             variant="outline"
             onClick={() => navigate("/")}
+            className="text-muted-foreground hover:text-foreground"
           >
-            View All Pillars
+            Back to Home
           </Button>
         </div>
       </footer>

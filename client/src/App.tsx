@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { WorkbookProgressProvider } from "./contexts/WorkbookProgressContext";
 import Home from "./pages/Home";
 import PillarPage from "./pages/PillarPage";
 
@@ -19,17 +20,19 @@ function Router() {
     </Switch>
   );
 }
-
 function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider
         defaultTheme="light"
+        // switchable
       >
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
+        <WorkbookProgressProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </WorkbookProgressProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

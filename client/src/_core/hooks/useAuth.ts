@@ -1,7 +1,7 @@
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { TRPCClientError } from "@trpc/client";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 type UseAuthOptions = {
   redirectOnUnauthenticated?: boolean;
@@ -60,20 +60,24 @@ export function useAuth(options?: UseAuthOptions) {
     logoutMutation.isPending,
   ]);
 
+  const didRedirectRef = useRef(false);
+
   useEffect(() => {
     if (!redirectOnUnauthenticated) return;
     if (meQuery.isLoading || logoutMutation.isPending) return;
-    if (state.user) return;
+    if (meQuery.data) return;
     if (typeof window === "undefined") return;
     if (window.location.pathname === redirectPath) return;
+    if (didRedirectRef.current) return;
 
-    window.location.href = redirectPath
+    didRedirectRef.current = true;
+    window.location.href = redirectPath;
   }, [
     redirectOnUnauthenticated,
     redirectPath,
     logoutMutation.isPending,
     meQuery.isLoading,
-    state.user,
+    meQuery.data,
   ]);
 
   return {

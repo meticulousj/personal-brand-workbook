@@ -10,6 +10,9 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { useLocation } from "wouter";
+import { useState } from "react";
+import { toast } from "sonner";
+import { templates } from "@/lib/generateTemplates";
 
 interface Resource {
   id: string;
@@ -24,6 +27,7 @@ interface ResourceItem {
   description: string;
   url?: string;
   category?: string;
+  templateId?: string;
 }
 
 const resources: Resource[] = [
@@ -38,36 +42,42 @@ const resources: Resource[] = [
         description:
           "A structured template to craft your unique personal brand statement in 3-5 sentences",
         category: "Template",
+        templateId: "personal-brand-statement",
       },
       {
         name: "LinkedIn Profile Optimization Checklist",
         description:
           "Step-by-step guide to optimize every section of your LinkedIn profile for maximum impact",
         category: "Checklist",
+        templateId: "linkedin-checklist",
       },
       {
         name: "Brand Values Prioritization Worksheet",
         description:
           "Interactive worksheet to identify and prioritize your top 5 core values and beliefs",
         category: "Worksheet",
+        templateId: "values-worksheet",
       },
       {
         name: "Audience Analysis Canvas",
         description:
           "Visual template to define and understand your ideal audience, their needs, and pain points",
         category: "Canvas",
+        templateId: "audience-canvas",
       },
       {
         name: "Unique Value Proposition Worksheet",
         description:
           "Structured exercise to articulate what makes you different and the value you deliver",
         category: "Worksheet",
+        templateId: "uvp-worksheet",
       },
       {
         name: "Personal Brand Story Framework",
         description:
           "Template to structure your personal story using the hero's journey narrative arc",
         category: "Framework",
+        templateId: "story-framework",
       },
     ],
   },
@@ -232,6 +242,35 @@ const resources: Resource[] = [
 
 export default function ResourcesPage() {
   const [, navigate] = useLocation();
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
+
+  const handleTemplateDownload = async (templateId: string, templateName: string) => {
+    setDownloadingId(templateId);
+    try {
+      const template = templates[templateId as keyof typeof templates];
+      if (!template) {
+        toast.error("Template not found");
+        return;
+      }
+
+      const pdfBlob = await template.generator();
+      const url = URL.createObjectURL(pdfBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${templateId}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast.success(`${templateName} downloaded successfully!`);
+    } catch (error) {
+      console.error("Failed to download template:", error);
+      toast.error("Failed to download template. Please try again.");
+    } finally {
+      setDownloadingId(null);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -315,6 +354,17 @@ export default function ResourcesPage() {
                       >
                         Visit Resource <ExternalLink className="w-4 h-4" />
                       </a>
+                    ) : item.templateId ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full justify-center gap-2"
+                        onClick={() => handleTemplateDownload(item.templateId!, item.name)}
+                        disabled={downloadingId === item.templateId}
+                      >
+                        <Download className="w-4 h-4" />
+                        {downloadingId === item.templateId ? "Downloading..." : "Download PDF"}
+                      </Button>
                     ) : (
                       <Button
                         variant="outline"

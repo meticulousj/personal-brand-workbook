@@ -8,6 +8,7 @@ import { WorkbookProgressProvider } from "./contexts/WorkbookProgressContext";
 import Home from "./pages/Home";
 import PillarPage from "./pages/PillarPage";
 import ExportPage from "./pages/ExportPage";
+import ResourcesPage from "./pages/ResourcesPage";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/pillar/:id" component={PillarPage} />
       <Route path="/export" component={ExportPage} />
+      <Route path="/resources" component={ResourcesPage} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

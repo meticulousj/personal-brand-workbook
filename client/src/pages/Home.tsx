@@ -101,7 +101,12 @@ export default function Home() {
           <nav className="hidden md:flex gap-8 items-center">
             <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition">About</a>
             <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition">Workbook</a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition">Resources</a>
+            <button
+              onClick={() => navigate("/resources")}
+              className="text-sm text-muted-foreground hover:text-foreground transition cursor-pointer"
+            >
+              Resources
+            </button>
           </nav>
         </div>
       </header>

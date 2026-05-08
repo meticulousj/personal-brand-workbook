@@ -161,7 +161,7 @@ export async function generateLinkedInChecklistTemplate(): Promise<Blob> {
     yPos -= 20;
 
     section.items.forEach((item) => {
-      page.drawText(`☐ ${item}`, {
+      page.drawText(`[ ] ${item}`, {
         x: 70,
         y: yPos,
         size: 10,

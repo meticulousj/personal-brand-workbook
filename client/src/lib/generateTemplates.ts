@@ -4,6 +4,8 @@ const primaryColor = rgb(79 / 255, 70 / 255, 229 / 255); // Indigo
 const accentColor = rgb(217 / 255, 119 / 255, 6 / 255); // Amber
 const textColor = rgb(15 / 255, 23 / 255, 42 / 255); // Slate
 const lightGray = rgb(226 / 255, 232 / 255, 240 / 255); // Light slate
+const white = rgb(1, 1, 1);
+const darkGray = rgb(150 / 255, 150 / 255, 150 / 255);
 
 interface TemplateConfig {
   title: string;
@@ -37,7 +39,7 @@ export async function generatePersonalBrandStatementTemplate(): Promise<Blob> {
     x: 50,
     y: yPos - 25,
     size: 18,
-    color: rgb(255, 255, 255),
+    color: white,
   });
 
   yPos -= 80;
@@ -98,7 +100,7 @@ export async function generatePersonalBrandStatementTemplate(): Promise<Blob> {
     x: 50,
     y: 20,
     size: 9,
-    color: rgb(150, 150, 150),
+    color: darkGray,
   });
 
   const pdfBytes = await pdfDoc.save();
@@ -124,7 +126,7 @@ export async function generateLinkedInChecklistTemplate(): Promise<Blob> {
     x: 50,
     y: yPos - 25,
     size: 18,
-    color: rgb(255, 255, 255),
+    color: white,
   });
 
   yPos -= 80;
@@ -177,7 +179,7 @@ export async function generateLinkedInChecklistTemplate(): Promise<Blob> {
     x: 50,
     y: 20,
     size: 9,
-    color: rgb(150, 150, 150),
+    color: darkGray,
   });
 
   const pdfBytes = await pdfDoc.save();
@@ -203,7 +205,7 @@ export async function generateValuesWorksheetTemplate(): Promise<Blob> {
     x: 50,
     y: yPos - 25,
     size: 18,
-    color: rgb(255, 255, 255),
+    color: white,
   });
 
   yPos -= 80;
@@ -287,7 +289,7 @@ export async function generateValuesWorksheetTemplate(): Promise<Blob> {
     x: 50,
     y: 20,
     size: 9,
-    color: rgb(150, 150, 150),
+    color: darkGray,
   });
 
   const pdfBytes = await pdfDoc.save();
@@ -313,7 +315,7 @@ export async function generateAudienceCanvasTemplate(): Promise<Blob> {
     x: 50,
     y: yPos - 25,
     size: 18,
-    color: rgb(255, 255, 255),
+    color: white,
   });
 
   yPos -= 80;
@@ -355,7 +357,7 @@ export async function generateAudienceCanvasTemplate(): Promise<Blob> {
     x: 50,
     y: 20,
     size: 9,
-    color: rgb(150, 150, 150),
+    color: darkGray,
   });
 
   const pdfBytes = await pdfDoc.save();
@@ -381,7 +383,7 @@ export async function generateUVPWorksheetTemplate(): Promise<Blob> {
     x: 50,
     y: yPos - 25,
     size: 18,
-    color: rgb(255, 255, 255),
+    color: white,
   });
 
   yPos -= 80;
@@ -424,7 +426,7 @@ export async function generateUVPWorksheetTemplate(): Promise<Blob> {
     x: 50,
     y: 20,
     size: 9,
-    color: rgb(150, 150, 150),
+    color: darkGray,
   });
 
   const pdfBytes = await pdfDoc.save();
@@ -450,7 +452,7 @@ export async function generateStoryFrameworkTemplate(): Promise<Blob> {
     x: 50,
     y: yPos - 25,
     size: 18,
-    color: rgb(255, 255, 255),
+    color: white,
   });
 
   yPos -= 80;
@@ -487,7 +489,7 @@ export async function generateStoryFrameworkTemplate(): Promise<Blob> {
       x: 70,
       y: yPos,
       size: 9,
-      color: rgb(100, 100, 100),
+      color: rgb(100 / 255, 100 / 255, 100 / 255),
     });
 
     yPos -= 18;
@@ -511,7 +513,7 @@ export async function generateStoryFrameworkTemplate(): Promise<Blob> {
     x: 50,
     y: 20,
     size: 9,
-    color: rgb(150, 150, 150),
+    color: darkGray,
   });
 
   const pdfBytes = await pdfDoc.save();

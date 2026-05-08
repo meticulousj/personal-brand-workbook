@@ -238,16 +238,24 @@ export default function Home() {
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Start with the first pillar and work through each section at your own pace. Each pillar includes exercises, self-assessments, and actionable insights to guide your journey. You can also download the entire workbook as a PDF to complete offline.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              onClick={() => navigate("/pillar/1")}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground"
-            >
-              Begin with Pillar 1 <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
-            <DownloadPDFButton />
-          </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                size="lg"
+                onClick={() => navigate("/pillar/1")}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
+                Begin with Pillar 1 <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+              <Button
+                size="lg"
+                onClick={() => navigate("/export")}
+                variant="outline"
+                className="border-primary text-primary hover:bg-primary/10"
+              >
+                View Your Progress <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+              <DownloadPDFButton />
+            </div>
         </div>
       </section>
 

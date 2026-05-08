@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export interface PillarResponse {
   pillarId: number;
@@ -61,9 +61,9 @@ export function useWorkbookProgress() {
   }, [progress, isLoading]);
 
   /**
-   * Save response for a specific pillar
+   * Save response for a specific pillar - wrapped in useCallback to prevent infinite loops
    */
-  const saveResponse = (pillarId: number, responses: Record<string, string>) => {
+  const saveResponse = useCallback((pillarId: number, responses: Record<string, string>) => {
     setProgress((prev) => {
       if (!prev) return prev;
 
@@ -90,21 +90,21 @@ export function useWorkbookProgress() {
         lastUpdated: new Date().toISOString(),
       };
     });
-  };
+  }, []);
 
   /**
-   * Get responses for a specific pillar
+   * Get responses for a specific pillar - wrapped in useCallback to prevent infinite loops
    */
-  const getResponses = (pillarId: number): Record<string, string> => {
+  const getResponses = useCallback((pillarId: number): Record<string, string> => {
     if (!progress) return {};
     const pillar = progress.pillars.find((p) => p.pillarId === pillarId);
     return pillar?.responses || {};
-  };
+  }, [progress]);
 
   /**
-   * Update current pillar
+   * Update current pillar - wrapped in useCallback to prevent infinite loops
    */
-  const setCurrentPillar = (pillarId: number) => {
+  const setCurrentPillar = useCallback((pillarId: number) => {
     setProgress((prev) => {
       if (!prev) return prev;
       return {
@@ -113,28 +113,28 @@ export function useWorkbookProgress() {
         lastUpdated: new Date().toISOString(),
       };
     });
-  };
+  }, []);
 
   /**
-   * Get completion percentage
+   * Get completion percentage - wrapped in useCallback to prevent infinite loops
    */
-  const getCompletionPercentage = (totalPillars: number): number => {
+  const getCompletionPercentage = useCallback((totalPillars: number): number => {
     if (!progress || totalPillars === 0) return 0;
     return Math.round((progress.pillars.length / totalPillars) * 100);
-  };
+  }, [progress]);
 
   /**
-   * Check if a pillar has been completed
+   * Check if a pillar has been completed - wrapped in useCallback to prevent infinite loops
    */
-  const isPillarCompleted = (pillarId: number): boolean => {
+  const isPillarCompleted = useCallback((pillarId: number): boolean => {
     if (!progress) return false;
     return progress.pillars.some((p) => p.pillarId === pillarId);
-  };
+  }, [progress]);
 
   /**
    * Clear all progress
    */
-  const clearProgress = () => {
+  const clearProgress = useCallback(() => {
     try {
       localStorage.removeItem(STORAGE_KEY);
       setProgress({
@@ -145,20 +145,20 @@ export function useWorkbookProgress() {
     } catch (error) {
       console.error('Failed to clear workbook progress:', error);
     }
-  };
+  }, []);
 
   /**
    * Export progress as JSON
    */
-  const exportProgress = (): string => {
+  const exportProgress = useCallback((): string => {
     if (!progress) return '';
     return JSON.stringify(progress, null, 2);
-  };
+  }, [progress]);
 
   /**
    * Import progress from JSON
    */
-  const importProgress = (jsonString: string): boolean => {
+  const importProgress = useCallback((jsonString: string): boolean => {
     try {
       const imported = JSON.parse(jsonString);
       if (imported.currentPillar && imported.pillars && imported.lastUpdated) {
@@ -170,7 +170,7 @@ export function useWorkbookProgress() {
       console.error('Failed to import workbook progress:', error);
       return false;
     }
-  };
+  }, []);
 
   return {
     progress,

@@ -173,7 +173,7 @@ export default function PillarPage() {
     setResponses(savedResponses);
     setCurrentPillar(pillarId);
     setIsSaved(true);
-  }, [pillarId, getResponses, setCurrentPillar]);
+  }, [pillarId]);
 
   // Auto-save responses with debouncing
   useEffect(() => {

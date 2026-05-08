@@ -8,8 +8,8 @@ import { WorkbookProgressProvider } from "./contexts/WorkbookProgressContext";
 import Home from "./pages/Home";
 import PillarPage from "./pages/PillarPage";
 
-
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />

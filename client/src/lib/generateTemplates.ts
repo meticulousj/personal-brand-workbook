@@ -104,7 +104,7 @@ export async function generatePersonalBrandStatementTemplate(): Promise<Blob> {
   });
 
   const pdfBytes = await pdfDoc.save();
-  return new Blob([pdfBytes], { type: 'application/pdf' });
+  return new Blob([pdfBytes as any], { type: 'application/pdf' });
 }
 
 export async function generateLinkedInChecklistTemplate(): Promise<Blob> {
@@ -183,7 +183,7 @@ export async function generateLinkedInChecklistTemplate(): Promise<Blob> {
   });
 
   const pdfBytes = await pdfDoc.save();
-  return new Blob([pdfBytes], { type: 'application/pdf' });
+  return new Blob([pdfBytes as any], { type: 'application/pdf' });
 }
 
 export async function generateValuesWorksheetTemplate(): Promise<Blob> {
@@ -293,7 +293,7 @@ export async function generateValuesWorksheetTemplate(): Promise<Blob> {
   });
 
   const pdfBytes = await pdfDoc.save();
-  return new Blob([pdfBytes], { type: 'application/pdf' });
+  return new Blob([pdfBytes as any], { type: 'application/pdf' });
 }
 
 export async function generateAudienceCanvasTemplate(): Promise<Blob> {
@@ -361,7 +361,7 @@ export async function generateAudienceCanvasTemplate(): Promise<Blob> {
   });
 
   const pdfBytes = await pdfDoc.save();
-  return new Blob([pdfBytes], { type: 'application/pdf' });
+  return new Blob([pdfBytes as any], { type: 'application/pdf' });
 }
 
 export async function generateUVPWorksheetTemplate(): Promise<Blob> {
@@ -430,7 +430,7 @@ export async function generateUVPWorksheetTemplate(): Promise<Blob> {
   });
 
   const pdfBytes = await pdfDoc.save();
-  return new Blob([pdfBytes], { type: 'application/pdf' });
+  return new Blob([pdfBytes as any], { type: 'application/pdf' });
 }
 
 export async function generateStoryFrameworkTemplate(): Promise<Blob> {
@@ -517,7 +517,7 @@ export async function generateStoryFrameworkTemplate(): Promise<Blob> {
   });
 
   const pdfBytes = await pdfDoc.save();
-  return new Blob([pdfBytes], { type: 'application/pdf' });
+  return new Blob([pdfBytes as any], { type: 'application/pdf' });
 }
 
 export const templates = {

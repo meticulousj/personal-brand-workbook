@@ -13,6 +13,7 @@ import { useLocation } from "wouter";
 import { useState } from "react";
 import { toast } from "sonner";
 import { templates } from "@/lib/generateTemplates";
+import { readingGuides } from "@/lib/generateReadingGuides";
 
 interface Resource {
   id: string;
@@ -87,6 +88,18 @@ const resources: Resource[] = [
     description: "Essential books on personal branding, self-discovery, and professional growth",
     icon: <BookOpen className="w-6 h-6" />,
     items: [
+      {
+        name: "Recommended Reading List Guide",
+        description: "Comprehensive guide with summaries of 8 essential personal branding books and key takeaways from each",
+        category: "Guide",
+        templateId: "reading-list",
+      },
+      {
+        name: "Personal Branding Tips & Strategies",
+        description: "8 actionable tips and strategies for building an authentic personal brand that stands out",
+        category: "Guide",
+        templateId: "branding-tips",
+      },
       {
         name: "Reinventing You",
         description: "By Dorie Clark - The essential guide to building and promoting your personal brand",
@@ -243,6 +256,34 @@ const resources: Resource[] = [
 export default function ResourcesPage() {
   const [, navigate] = useLocation();
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+
+  const handleGuideDownload = async (guideId: string, guideName: string) => {
+    setDownloadingId(guideId);
+    try {
+      const guide = readingGuides[guideId as keyof typeof readingGuides];
+      if (!guide) {
+        toast.error("Guide not found");
+        return;
+      }
+
+      const pdfBlob = await guide.generator();
+      const url = URL.createObjectURL(pdfBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${guideId}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast.success(`${guideName} downloaded successfully!`);
+    } catch (error) {
+      console.error("Failed to download guide:", error);
+      toast.error("Failed to download guide. Please try again.");
+    } finally {
+      setDownloadingId(null);
+    }
+  };
 
   const handleTemplateDownload = async (templateId: string, templateName: string) => {
     setDownloadingId(templateId);

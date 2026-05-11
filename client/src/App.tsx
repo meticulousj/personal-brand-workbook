@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import PillarPage from "./pages/PillarPage";
 import ExportPage from "./pages/ExportPage";
 import ResourcesPage from "./pages/ResourcesPage";
+import PricingPage from "./pages/PricingPage";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/pillar/:id" component={PillarPage} />
       <Route path="/export" component={ExportPage} />
       <Route path="/resources" component={ResourcesPage} />
+      <Route path="/pricing" component={PricingPage} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

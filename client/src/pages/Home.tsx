@@ -107,6 +107,12 @@ export default function Home() {
             >
               Resources
             </button>
+            <button
+              onClick={() => navigate("/pricing")}
+              className="text-sm text-muted-foreground hover:text-foreground transition cursor-pointer"
+            >
+              Pricing
+            </button>
           </nav>
         </div>
       </header>

@@ -14,6 +14,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { templates } from "@/lib/generateTemplates";
 import { readingGuides } from "@/lib/generateReadingGuides";
+import EmailCaptureForm from "@/components/EmailCaptureForm";
 
 interface Resource {
   id: string;
@@ -452,6 +453,22 @@ export default function ResourcesPage() {
               </svg>
               Connect with Jessica
             </a>
+          </div>
+        </div>
+
+        {/* Email Capture Section */}
+        <div className="mt-16 py-12 px-8 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200">
+          <div className="max-w-2xl mx-auto">
+            <h3 className="text-2xl font-display font-bold text-foreground mb-2 text-center">
+              Join Our Community
+            </h3>
+            <p className="text-center text-muted-foreground mb-8">
+              Get exclusive personal branding tips, resources, and updates delivered to your inbox.
+            </p>
+            <EmailCaptureForm 
+              leadMagnet="Personal Branding Tips & Strategies Guide"
+              source="resources-page"
+            />
           </div>
         </div>
 

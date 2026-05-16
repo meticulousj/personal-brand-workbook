@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, emailSubscribers, InsertEmailSubscriber } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -86,6 +86,40 @@ export async function getUserByOpenId(openId: string) {
 
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
 
+  return result.length > 0 ? result[0] : undefined;
+}
+
+// Email subscriber queries
+export async function subscribeEmail(subscriber: InsertEmailSubscriber): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot subscribe email: database not available");
+    return;
+  }
+
+  try {
+    await db.insert(emailSubscribers).values(subscriber).onDuplicateKeyUpdate({
+      set: {
+        name: subscriber.name,
+        source: subscriber.source,
+        subscribed: 1,
+        updatedAt: new Date(),
+      },
+    });
+  } catch (error) {
+    console.error("[Database] Failed to subscribe email:", error);
+    throw error;
+  }
+}
+
+export async function getEmailSubscriber(email: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get email subscriber: database not available");
+    return undefined;
+  }
+
+  const result = await db.select().from(emailSubscribers).where(eq(emailSubscribers.email, email)).limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
 

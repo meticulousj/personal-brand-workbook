@@ -2,6 +2,8 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
+import { subscribeEmail, getEmailSubscriber } from "./db";
+import { z } from "zod";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -17,12 +19,33 @@ export const appRouter = router({
     }),
   }),
 
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+  email: router({
+    subscribe: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        name: z.string().optional(),
+        source: z.string().default("lead-magnet"),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          await subscribeEmail({
+            email: input.email,
+            name: input.name,
+            source: input.source,
+          });
+          return { success: true, message: "Successfully subscribed!" };
+        } catch (error) {
+          console.error("[Email] Subscription error:", error);
+          return { success: false, message: "Failed to subscribe. Please try again." };
+        }
+      }),
+    check: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .query(async ({ input }) => {
+        const subscriber = await getEmailSubscriber(input.email);
+        return { isSubscribed: !!subscriber };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

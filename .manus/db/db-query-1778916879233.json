@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE `emailSubscribers` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`email` varchar(320) NOT NULL,\n\t`name` varchar(255),\n\t`source` varchar(100) NOT NULL DEFAULT 'lead-magnet',\n\t`leadMagnetDownloaded` text,\n\t`subscribed` int NOT NULL DEFAULT 1,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `emailSubscribers_id` PRIMARY KEY(`id`),\n\tCONSTRAINT `emailSubscribers_email_unique` UNIQUE(`email`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway06.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 44urZSjgJGxTqJZ.root --database ijkVXvgPD66gUXauQQ4X3q --execute CREATE TABLE `emailSubscribers` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`email` varchar(320) NOT NULL,\n\t`name` varchar(255),\n\t`source` varchar(100) NOT NULL DEFAULT 'lead-magnet',\n\t`leadMagnetDownloaded` text,\n\t`subscribed` int NOT NULL DEFAULT 1,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `emailSubscribers_id` PRIMARY KEY(`id`),\n\tCONSTRAINT `emailSubscribers_email_unique` UNIQUE(`email`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 765
+}

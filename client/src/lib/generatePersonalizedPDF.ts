@@ -124,7 +124,7 @@ export async function generatePersonalizedPDF(pillars: PillarData[]): Promise<Bl
       x: 50,
       y: yPos,
       size: 12,
-      color: rgb(100, 100, 100),
+      color: rgb(100 / 255, 100 / 255, 100 / 255),
       maxWidth: width - 100,
     });
 

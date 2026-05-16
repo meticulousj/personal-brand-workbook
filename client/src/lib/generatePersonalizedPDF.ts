@@ -33,7 +33,7 @@ export async function generatePersonalizedPDF(pillars: PillarData[]): Promise<Bl
     x: 50,
     y: height - 100,
     size: 28,
-    color: rgb(255, 255, 255),
+    color: rgb(1, 1, 1),
     maxWidth: width - 100,
   });
 
@@ -41,7 +41,7 @@ export async function generatePersonalizedPDF(pillars: PillarData[]): Promise<Bl
     x: 50,
     y: height - 150,
     size: 18,
-    color: rgb(255, 255, 255),
+    color: rgb(1, 1, 1),
   });
 
   page.drawText('Your Personalized Responses', {
@@ -61,7 +61,7 @@ export async function generatePersonalizedPDF(pillars: PillarData[]): Promise<Bl
     x: 50,
     y: height - 350,
     size: 12,
-    color: rgb(100, 100, 100),
+    color: rgb(100 / 255, 100 / 255, 100 / 255),
   });
 
   page.drawText(
@@ -171,7 +171,7 @@ export async function generatePersonalizedPDF(pillars: PillarData[]): Promise<Bl
       x: 50,
       y: 20,
       size: 9,
-      color: rgb(150, 150, 150),
+      color: rgb(150 / 255, 150 / 255, 150 / 255),
     });
   });
 

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, emailSubscribers, InsertEmailSubscriber } from "../drizzle/schema";
+import { InsertUser, users, emailSubscribers, InsertEmailSubscriber, stripeCustomers, InsertStripeCustomer, stripeSubscriptions, InsertStripeSubscription, stripePayments, InsertStripePayment } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -121,6 +121,130 @@ export async function getEmailSubscriber(email: string) {
 
   const result = await db.select().from(emailSubscribers).where(eq(emailSubscribers.email, email)).limit(1);
   return result.length > 0 ? result[0] : undefined;
+}
+
+// Stripe customer queries
+export async function getOrCreateStripeCustomer(userId: number, stripeCustomerId: string, email: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get/create stripe customer: database not available");
+    return undefined;
+  }
+
+  try {
+    const existing = await db.select().from(stripeCustomers).where(eq(stripeCustomers.userId, userId)).limit(1);
+    if (existing.length > 0) {
+      return existing[0];
+    }
+
+    await db.insert(stripeCustomers).values({
+      userId,
+      stripeCustomerId,
+      email,
+    });
+
+    const result = await db.select().from(stripeCustomers).where(eq(stripeCustomers.userId, userId)).limit(1);
+    return result.length > 0 ? result[0] : undefined;
+  } catch (error) {
+    console.error("[Database] Failed to get/create stripe customer:", error);
+    throw error;
+  }
+}
+
+// Stripe subscription queries
+export async function createStripeSubscription(subscription: InsertStripeSubscription) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create stripe subscription: database not available");
+    return undefined;
+  }
+
+  try {
+    await db.insert(stripeSubscriptions).values(subscription);
+    const result = await db.select().from(stripeSubscriptions).where(eq(stripeSubscriptions.stripeSubscriptionId, subscription.stripeSubscriptionId)).limit(1);
+    return result.length > 0 ? result[0] : undefined;
+  } catch (error) {
+    console.error("[Database] Failed to create stripe subscription:", error);
+    throw error;
+  }
+}
+
+export async function updateStripeSubscription(stripeSubscriptionId: string, updates: Partial<InsertStripeSubscription>) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update stripe subscription: database not available");
+    return undefined;
+  }
+
+  try {
+    await db.update(stripeSubscriptions).set({ ...updates, updatedAt: new Date() }).where(eq(stripeSubscriptions.stripeSubscriptionId, stripeSubscriptionId));
+    const result = await db.select().from(stripeSubscriptions).where(eq(stripeSubscriptions.stripeSubscriptionId, stripeSubscriptionId)).limit(1);
+    return result.length > 0 ? result[0] : undefined;
+  } catch (error) {
+    console.error("[Database] Failed to update stripe subscription:", error);
+    throw error;
+  }
+}
+
+export async function getUserSubscription(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get user subscription: database not available");
+    return undefined;
+  }
+
+  const result = await db.select().from(stripeSubscriptions).where(eq(stripeSubscriptions.userId, userId)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+// Stripe payment queries
+export async function createStripePayment(payment: InsertStripePayment) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create stripe payment: database not available");
+    return undefined;
+  }
+
+  try {
+    await db.insert(stripePayments).values(payment);
+    const result = await db.select().from(stripePayments).where(eq(stripePayments.stripePaymentIntentId, payment.stripePaymentIntentId)).limit(1);
+    return result.length > 0 ? result[0] : undefined;
+  } catch (error) {
+    console.error("[Database] Failed to create stripe payment:", error);
+    throw error;
+  }
+}
+
+export async function updateStripePayment(stripePaymentIntentId: string, status: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update stripe payment: database not available");
+    return undefined;
+  }
+
+  try {
+    await db.update(stripePayments).set({ status, updatedAt: new Date() }).where(eq(stripePayments.stripePaymentIntentId, stripePaymentIntentId));
+    const result = await db.select().from(stripePayments).where(eq(stripePayments.stripePaymentIntentId, stripePaymentIntentId)).limit(1);
+    return result.length > 0 ? result[0] : undefined;
+  } catch (error) {
+    console.error("[Database] Failed to update stripe payment:", error);
+    throw error;
+  }
+}
+
+export async function getUserPayments(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get user payments: database not available");
+    return [];
+  }
+
+  try {
+    return await db.select().from(stripePayments).where(eq(stripePayments.userId, userId));
+  } catch (error) {
+    console.error("[Database] Failed to get user payments:", error);
+    return [];
+  }
 }
 
 // TODO: add feature queries here as your schema grows.

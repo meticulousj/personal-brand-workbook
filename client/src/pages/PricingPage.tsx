@@ -231,6 +231,66 @@ export default function PricingPage() {
           ))}
         </div>
 
+        {/* Testimonials Section */}
+        <div className="mb-16">
+          <h3 className="text-3xl font-display font-bold text-foreground mb-4 text-center">
+            Success Stories from Our Community
+          </h3>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-12 text-center">
+            See how professionals like you have transformed their personal brands and accelerated their careers.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Testimonial 1 */}
+            <Card className="p-8 flex flex-col">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-amber-400">★</span>
+                ))}
+              </div>
+              <p className="text-foreground mb-6 flex-1">
+                "This workbook completely transformed how I think about my personal brand. I went from feeling invisible in my industry to being recognized as a thought leader. The 9-pillar framework is brilliant!"
+              </p>
+              <div>
+                <p className="font-semibold text-foreground">Sarah Mitchell</p>
+                <p className="text-sm text-muted-foreground">Marketing Director → VP of Brand Strategy</p>
+              </div>
+            </Card>
+
+            {/* Testimonial 2 */}
+            <Card className="p-8 flex flex-col border-primary/50 bg-gradient-to-br from-primary/5 to-accent/5">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-amber-400">★</span>
+                ))}
+              </div>
+              <p className="text-foreground mb-6 flex-1">
+                "I took the Executive package and worked 1-on-1 with the coaching team. The results were incredible—I landed speaking opportunities at 3 major conferences within 6 months. Best investment I've made in my career."
+              </p>
+              <div>
+                <p className="font-semibold text-foreground">James Chen</p>
+                <p className="text-sm text-muted-foreground">Tech Executive & Keynote Speaker</p>
+              </div>
+            </Card>
+
+            {/* Testimonial 3 */}
+            <Card className="p-8 flex flex-col">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-amber-400">★</span>
+                ))}
+              </div>
+              <p className="text-foreground mb-6 flex-1">
+                "As someone just starting my consulting business, I wasn't sure how to position myself. This workbook gave me clarity on my unique value and how to communicate it. My LinkedIn engagement tripled!"
+              </p>
+              <div>
+                <p className="font-semibold text-foreground">Emily Rodriguez</p>
+                <p className="text-sm text-muted-foreground">Founder, Executive Coach</p>
+              </div>
+            </Card>
+          </div>
+        </div>
+
         {/* FAQ Section */}
         <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg border border-primary/10 p-12 mb-12">
           <h3 className="text-2xl font-display font-bold text-foreground mb-8 text-center">

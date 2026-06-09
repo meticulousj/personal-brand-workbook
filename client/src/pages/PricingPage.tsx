@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Check, Zap } from "lucide-react";
+import { ArrowLeft, Check, Zap, Loader2 } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -208,7 +208,14 @@ export default function PricingPage() {
                 }`}
                 size="lg"
               >
-                {loadingId === tier.id ? "Processing..." : tier.cta}
+                {loadingId === tier.id ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2 inline" />
+                  Processing...
+                </>
+              ) : (
+                tier.cta
+              )}
               </Button>
 
               {/* Features List */}
@@ -308,7 +315,14 @@ export default function PricingPage() {
             className="bg-white text-primary hover:bg-white/90 font-semibold px-8 py-3 text-lg"
             size="lg"
           >
-            {loadingId === "PROFESSIONAL" ? "Processing..." : "Start Your Journey"}
+            {loadingId === "PROFESSIONAL" ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin mr-2 inline" />
+                Processing...
+              </>
+            ) : (
+              "Start Your Journey"
+            )}
           </Button>
         </div>
       </main>

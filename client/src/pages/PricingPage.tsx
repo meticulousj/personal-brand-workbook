@@ -1,9 +1,12 @@
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ArrowLeft, Check, Zap } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { getLoginUrl } from "@/const";
 
 interface PricingTier {
   id: string;
@@ -18,7 +21,7 @@ interface PricingTier {
 
 const pricingTiers: PricingTier[] = [
   {
-    id: "starter",
+    id: "STARTER",
     name: "Starter",
     price: 29,
     description: "Perfect for individuals just beginning their personal branding journey",
@@ -34,7 +37,7 @@ const pricingTiers: PricingTier[] = [
     stripePriceId: "price_starter",
   },
   {
-    id: "professional",
+    id: "PROFESSIONAL",
     name: "Professional",
     price: 79,
     description: "Ideal for professionals looking to amplify their personal brand",
@@ -53,7 +56,7 @@ const pricingTiers: PricingTier[] = [
     stripePriceId: "price_professional",
   },
   {
-    id: "executive",
+    id: "EXECUTIVE",
     name: "Executive",
     price: 199,
     description: "Comprehensive solution for executives and thought leaders",
@@ -76,21 +79,31 @@ const pricingTiers: PricingTier[] = [
 
 export default function PricingPage() {
   const [, navigate] = useLocation();
+  const { isAuthenticated } = useAuth();
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const checkoutMutation = trpc.stripe.createCheckoutSession.useMutation();
 
   const handleCheckout = async (tier: PricingTier) => {
+    // Redirect to login if not authenticated
+    if (!isAuthenticated) {
+      window.location.href = getLoginUrl();
+      return;
+    }
+
     setLoadingId(tier.id);
     try {
-      // TODO: Implement Stripe checkout session creation
-      // For now, show a placeholder message
-      toast.info("Stripe checkout will be implemented soon. Contact support for early access.");
-      
-      // In production, this would call:
-      // const response = await trpc.stripe.createCheckoutSession.mutate({
-      //   priceId: tier.stripePriceId,
-      //   tierName: tier.name,
-      // });
-      // window.open(response.checkoutUrl, '_blank');
+      const response = await checkoutMutation.mutateAsync({
+        productKey: tier.id as "STARTER" | "PROFESSIONAL" | "EXECUTIVE",
+        origin: window.location.origin,
+      });
+
+      if (response.success && response.url) {
+        // Open Stripe checkout in a new tab
+        window.open(response.url, "_blank");
+        toast.success("Redirecting to checkout...");
+      } else {
+        toast.error("Failed to create checkout session. Please try again.");
+      }
     } catch (error) {
       console.error("Checkout error:", error);
       toast.error("Failed to initiate checkout. Please try again.");
@@ -250,11 +263,11 @@ export default function PricingPage() {
 
             <div>
               <h4 className="font-semibold text-foreground mb-3">
-                What if I need custom coaching?
+                How long do I have access to the materials?
               </h4>
               <p className="text-muted-foreground text-sm">
-                Contact our team for custom packages tailored to your specific needs. We offer
-                enterprise solutions for organizations.
+                Access duration varies by plan. Starter includes 30 days, Professional includes 90
+                days with lifetime updates, and Executive includes lifetime access.
               </p>
             </div>
 
@@ -263,50 +276,40 @@ export default function PricingPage() {
                 Do you offer team or corporate licenses?
               </h4>
               <p className="text-muted-foreground text-sm">
-                Yes! We offer special pricing for teams and organizations. Contact us for a custom
-                quote.
+                Yes! For team or corporate inquiries, please contact us directly at
+                hello@personalbranding.com for custom pricing.
               </p>
             </div>
 
             <div>
               <h4 className="font-semibold text-foreground mb-3">
-                How long do I have access to the materials?
+                What if I need help choosing the right plan?
               </h4>
               <p className="text-muted-foreground text-sm">
-                Access duration varies by plan (30-90 days or lifetime). Check your specific plan
-                for details.
+                Our support team is here to help! Reach out to us, and we'll recommend the best
+                plan based on your personal branding goals.
               </p>
             </div>
           </div>
         </div>
 
         {/* CTA Section */}
-        <div className="text-center">
-          <h3 className="text-2xl font-display font-bold text-foreground mb-4">
-            Ready to Level Up Your Personal Brand?
+        <div className="bg-gradient-to-r from-primary to-accent rounded-lg p-12 text-center text-white">
+          <h3 className="text-3xl font-display font-bold mb-4">
+            Ready to Build Your Personal Brand?
           </h3>
-          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Choose your plan above and start your transformation today. Our team is here to support
-            you every step of the way.
+          <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
+            Join hundreds of professionals who are transforming their careers with our proven
+            personal branding framework.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              onClick={() => navigate("/")}
-              variant="outline"
-              size="lg"
-              className="gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Home
-            </Button>
-            <Button
-              onClick={() => navigate("/resources")}
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-white"
-            >
-              Explore Free Resources
-            </Button>
-          </div>
+          <Button
+            onClick={() => handleCheckout(pricingTiers[1]!)}
+            disabled={loadingId === "PROFESSIONAL"}
+            className="bg-white text-primary hover:bg-white/90 font-semibold px-8 py-3 text-lg"
+            size="lg"
+          >
+            {loadingId === "PROFESSIONAL" ? "Processing..." : "Start Your Journey"}
+          </Button>
         </div>
       </main>
     </div>
